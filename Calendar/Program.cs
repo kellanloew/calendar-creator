@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Calendar
 {
@@ -10,12 +11,11 @@ namespace Calendar
             Console.WriteLine("Please enter a calendar year.");
             string yearString = Console.ReadLine();
             int year;
-            
-            if(Int32.TryParse(yearString, out year))
+
+            if (Int32.TryParse(yearString, out year))
             {
                 CalendarData calendarData = new CalendarData(year);
-                // WriteAllText creates a file, writes the specified string to the file,
-                System.IO.File.WriteAllText("t.html", calendarData.CreateSaintDays());
+                File.WriteAllText("t.html", calendarData.ReturnPreHTML() + calendarData.CreateSaintDays() + "</body></html>");
             }
             else
             {
