@@ -15,26 +15,13 @@ namespace Calendar
             if (Int32.TryParse(yearString, out year))
             {
                 CalendarData calendarData = new CalendarData(year);
-                File.WriteAllText("t.html", calendarData.ReturnPreHTML() + calendarData.CreateSaintDays() + "</body></html>");
+                File.WriteAllText("calendar_"+yearString+".html", calendarData.ReturnPreHTML() + calendarData.CreateSaintDays() + "</body></html>");
             }
             else
             {
                 Console.WriteLine("Please enter a year greater than 0.");
                 Console.ReadLine();
             }
-        }
-    }
-
-    struct BasicCalendarDate
-    {
-        public int Date { get; set; }
-        public string Saint { get; set; }
-        public bool IsHolyDay { get; set; }
-        public BasicCalendarDate(int date, string saint = "", bool isHolyDay = false)
-        {
-            Date = date;
-            Saint = saint;
-            IsHolyDay = isHolyDay;
         }
     }
 }
