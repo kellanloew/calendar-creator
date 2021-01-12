@@ -13,14 +13,16 @@ namespace Calendar
         public int FirstDay { get; set; }
         public int numCalendarRows { get; set; }
         public List<BasicCalendarDate> SaintsList { get; set; }
-        public Dictionary<int, BasicCalendarDate> SpecialDays { get; set;}
+        public Dictionary<int, BasicCalendarDate> MovableDays { get; set;}
+        public int DaysInMonth { get; set; }
         public Month(string name, int year, List<BasicCalendarDate> saintsList)
         {
             MonthName = name;
             Year = year;
             SaintsList = saintsList;
-            SpecialDays = new Dictionary<int, BasicCalendarDate>();
+            MovableDays = new Dictionary<int, BasicCalendarDate>();
             MonthNumber = DateTime.ParseExact(MonthName, "MMMM", CultureInfo.InvariantCulture).Month;
+            DaysInMonth = DateTime.DaysInMonth(Year, MonthNumber);
             setFirstWeekDayOfMonth();
             setNumberOfCalendarRows();
         }
@@ -31,14 +33,17 @@ namespace Calendar
         }
         private void setNumberOfCalendarRows()
         {
-            int numDays = DateTime.DaysInMonth(Year, MonthNumber);
             numCalendarRows = 4;
-            if (numDays > 28)
+            //Console.WriteLine(MonthNumber.ToString() + " " + DaysInMonth.ToString());
+            if (DaysInMonth > 28 || FirstDay > 0)
             {
-                int leftOver = numDays - 28;
                 numCalendarRows++;
-                if (leftOver - (7 - FirstDay) > 0) numCalendarRows++;
             }
+            //if ()
+            //{
+                int leftOver = DaysInMonth - 28;
+                if (leftOver - (7 - FirstDay) > 0) numCalendarRows++;
+            //}
         }
     }
 
