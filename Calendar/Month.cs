@@ -12,19 +12,70 @@ namespace Calendar
         public int Year { get; set; }
         public int FirstDay { get; set; }
         public int numCalendarRows { get; set; }
-        public List<BasicCalendarDate> SaintsList { get; set; }
-        public Dictionary<int, BasicCalendarDate> MovableDays { get; set;}
+        public List<Dictionary<int, BasicCalendarDate>> SaintsList { get; set; }
         public int DaysInMonth { get; set; }
         public Month(string name, int year, List<BasicCalendarDate> saintsList)
         {
             MonthName = name;
             Year = year;
-            SaintsList = saintsList;
-            MovableDays = new Dictionary<int, BasicCalendarDate>();
+            SaintsList = new List<Dictionary<int, BasicCalendarDate>>();
+            int priority = 3;
+            foreach (BasicCalendarDate bcd in saintsList)
+            {
+                if (bcd.IsHolyDay) priority = 1;
+                else priority = 3;
+                SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { priority, bcd } });
+            }
             MonthNumber = DateTime.ParseExact(MonthName, "MMMM", CultureInfo.InvariantCulture).Month;
             DaysInMonth = DateTime.DaysInMonth(Year, MonthNumber);
             setFirstWeekDayOfMonth();
             setNumberOfCalendarRows();
+        }
+
+        public void AddSpecialFeast(int monthDay, BasicCalendarDate feast, int priority)
+        {
+            if(!SaintsList[monthDay].ContainsKey(priority))SaintsList[monthDay].Add(priority, feast);
+            else if(!SaintsList[monthDay].ContainsKey(priority + 1)) SaintsList[monthDay].Add(priority + 1, feast);
+        }
+       
+        public bool isFastDay(int day)
+        {
+            bool returnBool = false;
+
+
+            //loop through the priority levels
+            for (int i = 1; i < 4; i++)
+            {
+                if (SaintsList[day].ContainsKey(i))
+                {
+                    returnBool = SaintsList[day][i].IsFastDay;
+                    //if the priority level is greater than three, that takes precedence over level three
+                    if (i < 3) break;
+                }
+            }
+            return returnBool;
+        }
+
+        public bool isAbstinenceDay(int day, int dayOfWeek)
+        {
+            bool returnBool = false;
+
+            //sundays are never abstinence days
+            if (dayOfWeek == 1) return false;
+
+            //loop through the priority levels
+            for (int i = 1; i < 4; i++)
+            {
+                if (SaintsList[day].ContainsKey(i))
+                {
+                    returnBool = SaintsList[day][i].IsAbstinenceDay;
+                    //if the priority level is greater than three, that takes precedence over level three
+                    if (i < 3) break;
+                    //but if we got to three and its a Friday, should be abstinence
+                    else if (dayOfWeek == 6) returnBool = true;
+                }
+            }
+            return returnBool;
         }
 
         private void setFirstWeekDayOfMonth()

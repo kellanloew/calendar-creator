@@ -148,7 +148,7 @@ namespace Calendar
                     new BasicCalendarDate(3, "Seven Sorrows of the Blessed Virgin Mary"),
                     new BasicCalendarDate(4, "S Isidore, Bishop Confessor Doctor"),
                     new BasicCalendarDate(5, "S Vincent Ferrer, Confessor"),
-                    new BasicCalendarDate(6, "Epiphany of the Lord"),
+                    new BasicCalendarDate(6),
                     new BasicCalendarDate(7),
                     new BasicCalendarDate(8),
                     new BasicCalendarDate(9),
@@ -291,7 +291,7 @@ namespace Calendar
                     new BasicCalendarDate(31, "S Ignatius, Confesor")
                 }
             ));
-            AllDates[6].MovableDays.Add(24, new BasicCalendarDate(24, "S James, Apostle", false, false, false, 1));
+            AllDates[6].AddSpecialFeast(24, new BasicCalendarDate(24, "S James, Apostle", false, false, false), 1);
 
             //August saints
             AllDates.Add(new Month(
@@ -331,7 +331,7 @@ namespace Calendar
                     new BasicCalendarDate(31, "S Raymond Nonnatus, Confessor")
                 }
             ));
-            AllDates[7].MovableDays.Add(21, new BasicCalendarDate(21, "Immaculate Heart of the Blessed Virgin Mary", false, false, false, 1));
+            AllDates[7].AddSpecialFeast(21, new BasicCalendarDate(21, "Immaculate Heart of the Blessed Virgin Mary", false, false, false), 1);
 
             //September saints
             AllDates.Add(new Month(
@@ -343,7 +343,7 @@ namespace Calendar
                     new BasicCalendarDate(3),
                     new BasicCalendarDate(4),
                     new BasicCalendarDate(5, "S Lawrence Justinian Bishop Confessor"),
-                    new BasicCalendarDate(6, "Epiphany of the Lord"),
+                    new BasicCalendarDate(6),
                     new BasicCalendarDate(7),
                     new BasicCalendarDate(8, "Birth of the Blessed Virgin Mary; S Hadrian Martyr"),
                     new BasicCalendarDate(9, "S Gorgonius"),
@@ -707,7 +707,7 @@ namespace Calendar
                             sundayName = "Fourth Sunday of Advent";
                             break;
                         case 4:
-                            sundayName = "Sunday within the Octave of Christmas";
+                            if(DateTime.Compare(inputDate, new DateTime(Year, 12, 25)) != 0) sundayName = "Sunday within the Octave of Christmas";
                             break;
                     }
                 }
@@ -748,17 +748,11 @@ namespace Calendar
                         {
                             //if it's a fast day, show the plate symbol
                             if
-                                (i != 1 &&
-                                ((m.MovableDays.ContainsKey(monthDay - 1) && m.MovableDays[monthDay - 1].IsFastDay) ||
-                                 m.SaintsList[monthDay - 1].IsFastDay)
-                                ) HTML += "&#x1F37D;";
+                                (i != 1 && m.isFastDay(monthDay - 1)) HTML += "&#x1F37D;";
 
-                            //if it's a abstinence day and not a Friday, show the fish symbol
-                            if
-                                (i != 1 && ((((currentBlockNumbers + 1) % 7 != 0) && m.MovableDays.ContainsKey(monthDay - 1) && m.MovableDays[monthDay - 1].IsAbstinenceDay) || m.SaintsList[monthDay - 1].IsAbstinenceDay)) HTML += "&#x1f41f;&#xfe0e;";
+                            //if it's a abstinence day, show the fish symbol
+                            if(m.isAbstinenceDay(monthDay - 1, i)) HTML += "&#x1f41f;&#xfe0e;";
 
-                            //if it's a Friday, show fish symbol unless its a holy day
-                            else if((currentBlockNumbers + 1) % 7 == 0 && !m.SaintsList[monthDay - 1].IsHolyDay) HTML += "&#x1f41f;&#xfe0e;";
                             HTML += monthDay.ToString();
                         }
                         HTML += "</td>";
@@ -778,13 +772,12 @@ namespace Calendar
                             //only show the pretitle if it's not a sunday
                             if(i != 1)
                             {
-                                if (m.MovableDays.ContainsKey(monthDay) && m.MovableDays[monthDay].PreTitle.Length > 0)
+                                for(int k = 1; k <= 3; k++)
                                 {
-                                    HTML += "<p class='special'>" + m.MovableDays[monthDay].PreTitle + "</p>";
-                                }
-                                if (m.SaintsList[monthDay].PreTitle.Length > 0)
-                                {
-                                    HTML += "<p class='special'>" + m.SaintsList[monthDay].PreTitle + "</p>";
+                                    if (m.SaintsList[monthDay].ContainsKey(k) && m.SaintsList[monthDay][k].PreTitle.Length > 0)
+                                    {
+                                        HTML += "<p class='special'>" + m.SaintsList[monthDay][k].PreTitle + "</p>";
+                                    }
                                 }
                             }
 
@@ -796,14 +789,9 @@ namespace Calendar
                             {
                                 tempHTML = "";
 
-                                if (m.MovableDays.ContainsKey(monthDay) && m.MovableDays[monthDay].Title.Length > 0 && m.MovableDays[monthDay].ImportanceLevel == c)
+                                if (m.SaintsList[monthDay].ContainsKey(c) && m.SaintsList[monthDay][c].Title.Length > 0)
                                 {
-                                    tempHTML += m.MovableDays[monthDay].Title;
-                                    currentTitleExists = true;
-                                }
-                                else if (m.SaintsList[monthDay].Title.Length > 0 && m.SaintsList[monthDay].ImportanceLevel == c)
-                                {
-                                    tempHTML += m.SaintsList[monthDay].Title;
+                                    tempHTML += m.SaintsList[monthDay][c].Title;
                                     currentTitleExists = true;
                                 }
                                 else
@@ -811,49 +799,19 @@ namespace Calendar
                                     currentTitleExists = false;
                                 }
 
+                                //if this is a sunday
                                 if (c == 2 && i == 1)
                                 {
                                     tempHTML += GetSundayFromMonthAndDay(m.MonthNumber, monthDay + 1);
                                     currentTitleExists = true;
                                 }
-                                if (currentTitleExists && previousTitleExists) HTML += "; ";
+                                if (currentTitleExists && previousTitleExists && tempHTML.Length > 0) HTML += "; ";
 
                                 if (currentTitleExists) previousTitleExists = true;
 
                                 HTML += tempHTML;
                             }
 
-                           
-                            //if (i == 1)
-                            //{
-                            //    if (!m.SaintsList[monthDay].IsHolyDay)
-                            //    {
-                            //        HTML += GetSundayFromMonthAndDay(m.MonthNumber, monthDay + 1);
-                            //    }
-                            //    if (m.SaintsList[monthDay].Title.Length > 0 && !m.SaintsList[monthDay].IsHolyDay)
-                            //    {
-                            //        HTML += "; ";
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    if (m.MovableDays.ContainsKey(monthDay) && m.MovableDays[monthDay].PreTitle.Length > 0)
-                            //    {
-                            //        HTML += "<p class='special'>" + m.MovableDays[monthDay].PreTitle + "</p>";
-                            //    }
-                            //    if (m.SaintsList[monthDay].PreTitle.Length > 0)
-                            //    {
-                            //        HTML += "<p class='special'>" + m.SaintsList[monthDay].PreTitle + "</p>";
-                            //    }
-                            //}
-
-                            //if (m.MovableDays.ContainsKey(monthDay) && m.MovableDays[monthDay].Title.Length > 0)
-                            //{
-                            //    HTML += m.MovableDays[monthDay].Title;
-                            //    if (m.SaintsList[monthDay].Title.Length > 0) HTML += "; ";
-                            //}
-
-                           // HTML += m.SaintsList[monthDay].Title;
                         }
                         HTML += "</td>";
                         currentBlockSaints++;
@@ -905,17 +863,17 @@ namespace Calendar
         {
             //set Ash Wednesday
             DateTime AshWednesday = Easter.AddDays(-46);
-            AllDates[AshWednesday.Month - 1].MovableDays.Add(AshWednesday.Day - 1, new BasicCalendarDate(AshWednesday.Day, "ASH WEDNESDAY", false, true, true, 1));
+            AllDates[AshWednesday.Month - 1].AddSpecialFeast(AshWednesday.Day - 1, new BasicCalendarDate(AshWednesday.Day, "ASH WEDNESDAY", false, true, true), 1);
 
             //set holy thursday - holy saturday
             DateTime HolyThursday = Easter.AddDays(-3);
-            AllDates[HolyThursday.Month - 1].MovableDays.Add(HolyThursday.Day - 1, new BasicCalendarDate(HolyThursday.Day, "HOLY THURSDAY", false, true, false, 1));
+            AllDates[HolyThursday.Month - 1].AddSpecialFeast(HolyThursday.Day - 1, new BasicCalendarDate(HolyThursday.Day, "HOLY THURSDAY", false, true, false), 1);
 
             DateTime GoodFriday = Easter.AddDays(-2);
-            AllDates[GoodFriday.Month - 1].MovableDays.Add(GoodFriday.Day - 1, new BasicCalendarDate(GoodFriday.Day, "GOOD FRIDAY", false, true, true, 1));
+            AllDates[GoodFriday.Month - 1].AddSpecialFeast(GoodFriday.Day - 1, new BasicCalendarDate(GoodFriday.Day, "GOOD FRIDAY", false, true, true), 1);
 
             DateTime HolySaturday = Easter.AddDays(-1);
-            AllDates[HolySaturday.Month - 1].MovableDays.Add(HolySaturday.Day - 1, new BasicCalendarDate(HolySaturday.Day, "HOLY SATURDAY", false, true, true, 1));
+            AllDates[HolySaturday.Month - 1].AddSpecialFeast(HolySaturday.Day - 1, new BasicCalendarDate(HolySaturday.Day, "HOLY SATURDAY", false, true, true), 1);
 
             //set first ember day of year
             DateTime emberDay = new DateTime(Year, Easter.AddDays(-39).Month, Easter.AddDays(-39).Day);
@@ -940,34 +898,34 @@ namespace Calendar
                         break;
                 }
                 //set ember wednesday
-                AllDates[emberDay.Month - 1].MovableDays.Add(emberDay.Day - 1, new BasicCalendarDate(emberDay.Day, "", false, true, true, 2, "Ember Wednesday"));
+                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day - 1, new BasicCalendarDate(emberDay.Day, "", false, true, true, "Ember Wednesday"), 2);
                 //set ember friday
-                AllDates[emberDay.Month - 1].MovableDays.Add(emberDay.Day + 1, new BasicCalendarDate(emberDay.Day, "", false, true, true, 2, "Ember Friday"));
+                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day + 1, new BasicCalendarDate(emberDay.Day, "", false, true, true,"Ember Friday"), 2);
                 //set ember saturday
-                AllDates[emberDay.Month - 1].MovableDays.Add(emberDay.Day + 2, new BasicCalendarDate(emberDay.Day, "", false, true, true, 2, "Ember Saturday"));
+                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day + 2, new BasicCalendarDate(emberDay.Day, "", false, true, true, "Ember Saturday"), 2);
             }
 
             //Ascension Thursday
             DateTime Ascension = Easter.AddDays(39);
-            AllDates[Ascension.Month - 1].MovableDays.Add(Ascension.Day - 1, new BasicCalendarDate(Ascension.Day, "ASCENSION DAY", true, false, false, 1));
+            AllDates[Ascension.Month - 1].AddSpecialFeast(Ascension.Day - 1, new BasicCalendarDate(Ascension.Day, "ASCENSION DAY", true, false, false), 1);
 
             //Vigil of Pentecost
             DateTime VigilPentecost = Easter.AddDays(48);
-            if(!AllDates[VigilPentecost.Month - 1].MovableDays.ContainsKey(VigilPentecost.Day - 1)) AllDates[VigilPentecost.Month - 1].MovableDays.Add(VigilPentecost.Day - 1, new BasicCalendarDate(VigilPentecost.Day, "Vigil Pentecost", false, true, true, 2));
+            AllDates[VigilPentecost.Month - 1].AddSpecialFeast(VigilPentecost.Day - 1, new BasicCalendarDate(VigilPentecost.Day, "Vigil Pentecost", false, true, true), 2);
 
             //Corpus Christi (Thursday after Trinity Sunday)
             DateTime CorpusChristi = Easter.AddDays(60);
-            AllDates[CorpusChristi.Month - 1].MovableDays.Add(CorpusChristi.Day - 1, new BasicCalendarDate(CorpusChristi.Day, "Corpus Christi", false, false, false, 2));
+            AllDates[CorpusChristi.Month - 1].AddSpecialFeast(CorpusChristi.Day - 1, new BasicCalendarDate(CorpusChristi.Day, "Corpus Christi", false, false, false), 2);
 
             //Sacred Heart
             DateTime SacredHeart = Easter.AddDays(68);
-            AllDates[SacredHeart.Month - 1].MovableDays.Add(SacredHeart.Day - 1, new BasicCalendarDate(SacredHeart.Day, "Sacred Heart of Jesus", false, false, false, 2));
+            AllDates[SacredHeart.Month - 1].AddSpecialFeast(SacredHeart.Day - 1, new BasicCalendarDate(SacredHeart.Day, "Sacred Heart of Jesus", false, false, true), 2);
 
             //Christ The King
             DateTime CK = new DateTime(Year, 10, 1);
             CK = CK.AddMonths(1).AddDays(-1);
             while (CK.DayOfWeek != DayOfWeek.Sunday) CK = CK.AddDays(-1);
-            AllDates[CK.Month - 1].MovableDays.Add(CK.Day - 1, new BasicCalendarDate(CK.Day, "Christ The King", false, false, false, 1));
+            AllDates[CK.Month - 1].AddSpecialFeast(CK.Day - 1, new BasicCalendarDate(CK.Day, "Christ The King", false, false, false), 1);
 
             //set all days of Lent as fast days
             setDaysOfLentAsFastDays();
@@ -976,15 +934,21 @@ namespace Calendar
 
         private void SetVigilDaysForFeasts()
         {
+            //Assumption
+            DateTime Assumption = new DateTime(Year, 8, 14);
+            if (Assumption.DayOfWeek == DayOfWeek.Sunday) Assumption = Assumption.AddDays(-1);
+            AllDates[Assumption.Month - 1].AddSpecialFeast(Assumption.Day - 1, new BasicCalendarDate(Assumption.Day, "Vigil of the Assumption", false, true, true), 1);
+
+
             //All saints
             DateTime AllSaints = new DateTime(Year, 10, 31);
             if (AllSaints.DayOfWeek == DayOfWeek.Sunday) AllSaints = AllSaints.AddDays(-1);
-            AllDates[AllSaints.Month - 1].MovableDays.Add(AllSaints.Day - 1, new BasicCalendarDate(AllSaints.Day, "Vigil of All Saints", false, true, true, 1));
+            AllDates[AllSaints.Month - 1].AddSpecialFeast(AllSaints.Day - 1, new BasicCalendarDate(AllSaints.Day, "Vigil of All Saints", false, true, true), 1);
 
             //Immaculate Conception
             DateTime ImmConception = new DateTime(Year, 12, 7);
             if (ImmConception.DayOfWeek == DayOfWeek.Sunday) ImmConception = ImmConception.AddDays(-1);
-            AllDates[ImmConception.Month - 1].MovableDays.Add(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of Immaculate Conception", false, true, true, 1));
+            AllDates[ImmConception.Month - 1].AddSpecialFeast(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of Immaculate Conception", false, true, true), 1);
         }
 
         private void setDaysOfLentAsFastDays()
@@ -992,7 +956,7 @@ namespace Calendar
             DateTime currentLentDay = Easter.AddDays(-46);
             for(int i = 0; i < 44; i++)
             {
-                if (currentLentDay.DayOfWeek != 0) AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1].IsFastDay = true;
+                if (currentLentDay.DayOfWeek != 0) AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1][3].IsFastDay = true;
                 currentLentDay = currentLentDay.AddDays(1);
             }
         }
