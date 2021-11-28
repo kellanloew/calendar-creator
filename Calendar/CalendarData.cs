@@ -68,7 +68,7 @@ namespace Calendar
                 Year,
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1, "S Ignatius"),
-                    new BasicCalendarDate(2, "Purification of the Blessed Virgin Mary"),
+                    new BasicCalendarDate(2, "Purification of the Blessed Virgin Mary", false, false, false, "", 1),
                     new BasicCalendarDate(3, "S Blase"),
                     new BasicCalendarDate(4, "S Andrew Corsini"),
                     new BasicCalendarDate(5, "S Agatha"),
@@ -90,14 +90,30 @@ namespace Calendar
                     new BasicCalendarDate(21),
                     new BasicCalendarDate(22, "Chair of S Peter Ap at Antioch; S Paul, Apostle"),
                     new BasicCalendarDate(23, "S Peter Damian, Bishop Confessor Doctor"),
-                    new BasicCalendarDate(24),
-                    new BasicCalendarDate(25, "S Matthias, Apostle"),
-                    new BasicCalendarDate(26),
-                    new BasicCalendarDate(27),
-                    new BasicCalendarDate(28, "S Gabriel of the Sorrowful Virgin, Confessor"),
-                    new BasicCalendarDate(29)
+                    //new BasicCalendarDate(24),
+                    //new BasicCalendarDate(25, "S Matthias, Apostle"),
+                    //new BasicCalendarDate(26),
+                    //new BasicCalendarDate(27),
+                    //new BasicCalendarDate(28, "S Gabriel of the Sorrowful Virgin, Confessor"),
+                    //new BasicCalendarDate(29)
                 }
             ));
+            //add Leap year determined saints days
+            int offset = 0;
+            if (AllDates[1].DaysInMonth == 29)
+            {
+                offset = 1;
+                AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(24) } });
+            }
+
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(24 + offset, "S Matthias, Apostle", false, false, false, "", 1) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(25 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(26 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(27 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(28 + offset, "S Gabriel of the Sorrowful Virgin, Confessor") } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(29 + offset) } });
+
+
 
             //March saints
             AllDates.Add(new Month(
@@ -122,7 +138,7 @@ namespace Calendar
                     new BasicCalendarDate(16),
                     new BasicCalendarDate(17, "S Patrick, Bishop Confessor"),
                     new BasicCalendarDate(18, "S Cyril, Bishop Confessor Doctor"),
-                    new BasicCalendarDate(19, "S Joseph, Husband of the Blessed Virgin Mary, Confessor"),
+                    new BasicCalendarDate(19, "S Joseph, Confessor"),
                     new BasicCalendarDate(20),
                     new BasicCalendarDate(21, "S Benedict, Abbot"),
                     new BasicCalendarDate(22),
@@ -145,7 +161,7 @@ namespace Calendar
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1),
                     new BasicCalendarDate(2, "S Francis of Paola, Confessor"),
-                    new BasicCalendarDate(3, "Seven Sorrows of the Blessed Virgin Mary"),
+                    new BasicCalendarDate(3),
                     new BasicCalendarDate(4, "S Isidore, Bishop Confessor Doctor"),
                     new BasicCalendarDate(5, "S Vincent Ferrer, Confessor"),
                     new BasicCalendarDate(6),
@@ -167,11 +183,11 @@ namespace Calendar
                     new BasicCalendarDate(22, "SS Soter and Caius, Popes Martyrs"),
                     new BasicCalendarDate(23, "S George, Martyr"),
                     new BasicCalendarDate(24, "S Fidelis of Sigmaringen, Martyr"),
-                    new BasicCalendarDate(25, "S Mark, Evangelist"),
+                    new BasicCalendarDate(25, "S Mark, Evangelist", false, false, false, "", 1),
                     new BasicCalendarDate(26, "SS Cletus & Marcellinus, Popes Martyrs"),
                     new BasicCalendarDate(27, "S Peter Canisius, Confessor Doctor"),
-                    new BasicCalendarDate(28, "S Paul of the Cross, Confessor; S Vitalis, Martyr"),
-                    new BasicCalendarDate(29, "S Joseph Husband of the Blessed Virgin Mary, Confessor; S Peter, Martyr"),
+                    new BasicCalendarDate(28, "S Joseph Husband of the Blessed Virgin Mary, Confessor; S Paul of the Cross, Confessor; S Vitalis, Martyr"),
+                    new BasicCalendarDate(29, "S Peter of Verona, Martyr"),
                     new BasicCalendarDate(30, "S Catherine of Siena, Virgin")
                 }
             ));
@@ -181,9 +197,9 @@ namespace Calendar
                 "May",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "SS Philip & James, Apostles"),
+                    new BasicCalendarDate(1, "SS Philip & James, Apostles", false, false, false, "", 1),
                     new BasicCalendarDate(2, "S Athanasius, Bishop Confessor Doctor"),
-                    new BasicCalendarDate(3, "Finding of the Holy Cross; SS Alexander & Comp., Martyrs"),
+                    new BasicCalendarDate(3, "SS Alexander & Comp., Martyrs"),
                     new BasicCalendarDate(4, "S Monica, Widow"),
                     new BasicCalendarDate(5, "S Pius, Pope Confessor"),
                     new BasicCalendarDate(6, "S John Apostle before the Latin gate"),
@@ -211,16 +227,18 @@ namespace Calendar
                     new BasicCalendarDate(28, "S Augustine, Bishop Confessor"),
                     new BasicCalendarDate(29, "S Mary Magdalen de’ Pazzi, Virgin"),
                     new BasicCalendarDate(30, "S Felix, Pope Martyr"),
-                    new BasicCalendarDate(31, "S Angela Merici, Virigin; S Petronilla, Virgin")
+                    new BasicCalendarDate(31, "S Petronilla, Virgin")
                 }
             ));
+            AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Finding of the Holy Cross", false, false, false), 1);
+            AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Queenship of the Blessed Virgin", false, false, false), 1);
 
             //June saints
             AllDates.Add(new Month(
                 "June",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1),
+                    new BasicCalendarDate(1, "S Angela Merici, Virigin"),
                     new BasicCalendarDate(2, "S Marcellinus & Comp., Martyrs"),
                     new BasicCalendarDate(3),
                     new BasicCalendarDate(4, "S Francis Caracciolo, Confessor"),
@@ -259,7 +277,7 @@ namespace Calendar
                 Year,
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1, "Most Precious Blood of Jesus"),
-                    new BasicCalendarDate(2, "Visitation of the Blessed Virgin Mary; SS Processus & Martinianus, Martyrs"),
+                    new BasicCalendarDate(2, "SS Processus & Martinianus, Martyrs"),
                     new BasicCalendarDate(3, "S Leo, Pope Confessor"),
                     new BasicCalendarDate(4),
                     new BasicCalendarDate(5, "S Antony Maria Zaccaria, Confessor"),
@@ -283,7 +301,7 @@ namespace Calendar
                     new BasicCalendarDate(23, "S Apollinaris, Bishop Martyr; S Liborius, Bishop Confessor"),
                     new BasicCalendarDate(24, "S Christina, Virgin Martyr"),
                     new BasicCalendarDate(25, "S Christopher, Martyr"),
-                    new BasicCalendarDate(26, "S Anne Mother of the Blessed Virgin Mary"),
+                    new BasicCalendarDate(26, "S Anne Mother of the Blessed Virgin Mary", false, false, false, "", 1),
                     new BasicCalendarDate(27, "S Pantaleon, Martyr"),
                     new BasicCalendarDate(28, "SS Nazarius & Comp., Martyrs"),
                     new BasicCalendarDate(29, "S Martha, Virgin; SS Felix &c Comp., Martyrs"),
@@ -292,6 +310,7 @@ namespace Calendar
                 }
             ));
             AllDates[6].AddSpecialFeast(24, new BasicCalendarDate(24, "S James, Apostle", false, false, false), 1);
+            AllDates[6].AddSpecialFeast(1, new BasicCalendarDate(1, "Visitation of the Blessed Virgin Mary", false, false, false), 1);
 
             //August saints
             AllDates.Add(new Month(
@@ -303,17 +322,17 @@ namespace Calendar
                     new BasicCalendarDate(3, "Finding of St. Stephen Martyr"),
                     new BasicCalendarDate(4, "St. Dominic, Confessor"),
                     new BasicCalendarDate(5, "Dedication of S Mary at the snow"),
-                    new BasicCalendarDate(6, "Transfiguration of the Lord; SS Xystus & Comp., Martyrs"),
+                    new BasicCalendarDate(6, "SS Xystus & Comp., Martyrs"),
                     new BasicCalendarDate(7, "S Cajetan, Confessor; S Donatus Bishop Martyr"),
                     new BasicCalendarDate(8, "SS Cyriacus & Comp., Martyrs"),
                     new BasicCalendarDate(9, "S John Vianney, Confessor; S Romanus Martyr"),
-                    new BasicCalendarDate(10, "S Lawrence, Martyr"),
+                    new BasicCalendarDate(10, "S Lawrence, Martyr", false, false, false, "", 1),
                     new BasicCalendarDate(11, "SS Tiburtius, Martyr & Susanna, Virgin Martyr"),
                     new BasicCalendarDate(12, "S Clare, Virgin"),
                     new BasicCalendarDate(13, "SS Hippolytus & Cassianus, Martyrs"),
                     new BasicCalendarDate(14, "S Eusebius, Confessor", false, true, true),
                     new BasicCalendarDate(15, "Assumption of the Blessed Virgin Mary", true),
-                    new BasicCalendarDate(16, "S Joachim Father of the Blessed Virgin Mary, Confessor"),
+                    new BasicCalendarDate(16, "S Joachim Father of the Blessed Virgin Mary, Confessor", false, false, false, "", 1),
                     new BasicCalendarDate(17, "S Hyacinth, Confessor"),
                     new BasicCalendarDate(18),
                     new BasicCalendarDate(19, "S John Eudes, Confessor"),
@@ -321,7 +340,7 @@ namespace Calendar
                     new BasicCalendarDate(21, "S Jane Frances de Chantal, Widow"),
                     new BasicCalendarDate(22, "SS Timothy & Comp., Martyrs"),
                     new BasicCalendarDate(23, "S Philip Benizi, Confessor"),
-                    new BasicCalendarDate(24, "S Bartholomew, Apostle"),
+                    new BasicCalendarDate(24, "S Bartholomew, Apostle", false, false, false, "", 1),
                     new BasicCalendarDate(25, "S Louis, King Confessor"),
                     new BasicCalendarDate(26, "S Zephyrinus, Martyr"),
                     new BasicCalendarDate(27, "S Joseph Calasanctius, Confessor"),
@@ -332,6 +351,7 @@ namespace Calendar
                 }
             ));
             AllDates[7].AddSpecialFeast(21, new BasicCalendarDate(21, "Immaculate Heart of the Blessed Virgin Mary", false, false, false), 1);
+            AllDates[7].AddSpecialFeast(5, new BasicCalendarDate(5, "Transfiguration of the Lord", false, false, false), 1);
 
             //September saints
             AllDates.Add(new Month(
@@ -340,25 +360,25 @@ namespace Calendar
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1, "S Ægidius Abbot; Twelve Brothers, Martyrs"),
                     new BasicCalendarDate(2, "S Stephen, King Confessor"),
-                    new BasicCalendarDate(3),
+                    new BasicCalendarDate(3, "S Piux X, Pope"),
                     new BasicCalendarDate(4),
                     new BasicCalendarDate(5, "S Lawrence Justinian Bishop Confessor"),
                     new BasicCalendarDate(6),
                     new BasicCalendarDate(7),
-                    new BasicCalendarDate(8, "Birth of the Blessed Virgin Mary; S Hadrian Martyr"),
+                    new BasicCalendarDate(8, "S Hadrian Martyr"),
                     new BasicCalendarDate(9, "S Gorgonius"),
                     new BasicCalendarDate(10, "S Nicholas of Tolentino, Confessor"),
                     new BasicCalendarDate(11, "S Protus & Hyacinthus, Martyrs"),
                     new BasicCalendarDate(12, "Most Holy Name of the Blessed Virgin Mary"),
                     new BasicCalendarDate(13),
                     new BasicCalendarDate(14, "Exaltation of the Holy Cross"),
-                    new BasicCalendarDate(15, "Seven Sorrows of the Blessed Virgin Mary; S Nicomedes Martyr"),
+                    new BasicCalendarDate(15, "S Nicomedes Martyr"),
                     new BasicCalendarDate(16, "S Cornelius Martyr; S Cyprian, Bishop Martyr; SS. Euphemia & comp., Martyrs"),
                     new BasicCalendarDate(17, "Impression of stigmata on S Francis"),
                     new BasicCalendarDate(18, "S Joseph of Cupertino, Confessor"),
                     new BasicCalendarDate(19, "SS Ianuarius & comp., Martyrs"),
                     new BasicCalendarDate(20, "SS Eustachius & comp. Martyrs"),
-                    new BasicCalendarDate(21, "S Matthew, Apostle Evangelist"),
+                    new BasicCalendarDate(21, "S Matthew, Apostle Evangelist", false, false, false, "", 1),
                     new BasicCalendarDate(22, "S Thomas of Villanova, Bishop Confessor; SS Mauritius & comp., Martyrs"),
                     new BasicCalendarDate(23, "S Linus, Pope Martyr; S Thecla Virgin Martyr"),
                     new BasicCalendarDate(24, "Blessed Virgin Mary of Ransom"),
@@ -370,6 +390,9 @@ namespace Calendar
                     new BasicCalendarDate(30, "S Jerome, Confessor Doctor"),
                 }
             ));
+            AllDates[8].AddSpecialFeast(7, new BasicCalendarDate(7, "Birth of the Blessed Virgin Mary", false, false, false), 1);
+            AllDates[8].AddSpecialFeast(14, new BasicCalendarDate(14, "Seven Sorrows of the Blessed Virgin Mary", false, false, false), 1);
+
 
             //October saints
             AllDates.Add(new Month(
@@ -382,18 +405,18 @@ namespace Calendar
                     new BasicCalendarDate(4, "S Francis Confessor"),
                     new BasicCalendarDate(5, "SS Placidus & MM"),
                     new BasicCalendarDate(6, "S Bruno, Confessor"),
-                    new BasicCalendarDate(7, "Most Holy Rosary of the Blessed Virgin Mary; S Mark Confessor; SS Sergius & MM"),
+                    new BasicCalendarDate(7, "S Mark Confessor; SS Sergius & MM"),
                     new BasicCalendarDate(8, "S Brigid Widow"),
                     new BasicCalendarDate(9, "SS Dionysius & MM"),
                     new BasicCalendarDate(10, "S Francis Borgia Confessor"),
-                    new BasicCalendarDate(11, "Motherhood of the Blessed Virgin Mary"),
+                    new BasicCalendarDate(11, "Motherhood of the Blessed Virgin Mary", false, false, false, "", 1),
                     new BasicCalendarDate(12),
                     new BasicCalendarDate(13, "S Edward, Confessor"),
                     new BasicCalendarDate(14),
                     new BasicCalendarDate(15, "S Teresa, Virgin"),
                     new BasicCalendarDate(16, "S Hedwig, Widow"),
                     new BasicCalendarDate(17, "S Margaret Mary Alacoque Virgin"),
-                    new BasicCalendarDate(18, "S Luke Evangelist"),
+                    new BasicCalendarDate(18, "S Luke Evangelist", false, false, false, "", 1),
                     new BasicCalendarDate(19, "S Peter of Alcántara Confessor"),
                     new BasicCalendarDate(20, "S John Cantius Confessor"),
                     new BasicCalendarDate(21, "S Hilarion, Abbot; SS. Ursula & Comp., Virgin Martyrs"),
@@ -409,6 +432,8 @@ namespace Calendar
                     new BasicCalendarDate(31)
                 }
             ));
+            AllDates[9].AddSpecialFeast(6, new BasicCalendarDate(6, "Most Holy Rosary of the Blessed Virgin Mary", false, false, false), 1);
+
 
             //November saints
             AllDates.Add(new Month(
@@ -418,12 +443,12 @@ namespace Calendar
                     new BasicCalendarDate(1, "ALL SAINTS", true),
                     new BasicCalendarDate(2, "ALL SOULS"),
                     new BasicCalendarDate(3),
-                    new BasicCalendarDate(4),
+                    new BasicCalendarDate(4, "S Charles Borromeo, Confessor"),
                     new BasicCalendarDate(5),
                     new BasicCalendarDate(6),
                     new BasicCalendarDate(7),
                     new BasicCalendarDate(8, "com Four Martyrs"),
-                    new BasicCalendarDate(9, "Dedication of the Most Holy Redeemer; S Theodorus, Martyr"),
+                    new BasicCalendarDate(9, "S Theodorus, Martyr"),
                     new BasicCalendarDate(10, "S Andrew Avellino; S Tryphon & Comp., Martyrs"),
                     new BasicCalendarDate(11, "S Martin, Bishop Confessor; S Mennas, Martyr"),
                     new BasicCalendarDate(12),
@@ -444,9 +469,11 @@ namespace Calendar
                     new BasicCalendarDate(27),
                     new BasicCalendarDate(28),
                     new BasicCalendarDate(29, "S Saturninus, Martyr"),
-                    new BasicCalendarDate(30, "S Andrew, Apostle")
+                    new BasicCalendarDate(30, "S Andrew the Apostle", false, false, false, "", 1)
                 }
             ));
+            AllDates[10].AddSpecialFeast(8, new BasicCalendarDate(8, "Dedication of the Most Holy Redeemer", false, false, false), 1);
+
 
             //December saints
             AllDates.Add(new Month(
@@ -473,19 +500,20 @@ namespace Calendar
                     new BasicCalendarDate(18),
                     new BasicCalendarDate(19),
                     new BasicCalendarDate(20),
-                    new BasicCalendarDate(21, "S Thomas the Apostle"),
+                    new BasicCalendarDate(21, "S Thomas the Apostle, Martyr", false, false, false, "", 1),
                     new BasicCalendarDate(22),
                     new BasicCalendarDate(23),
                     new BasicCalendarDate(24, "CHRISTMAS EVE", false, true, true),
                     new BasicCalendarDate(25, "CHRISTMAS DAY; Com. S Anastasia, Martyr", true),
-                    new BasicCalendarDate(26, "S Stephen, Martyr"),
-                    new BasicCalendarDate(27, "S John the Apostle"),
-                    new BasicCalendarDate(28, "Holy Innocents, Martyrs"),
+                    new BasicCalendarDate(26, "S Stephen, Martyr", false, false, false, "", 1),
+                    new BasicCalendarDate(27, "S John the Apostle", false, false, false, "", 1),
+                    new BasicCalendarDate(28, "Holy Innocents, Martyrs", false, false, false, "", 1),
                     new BasicCalendarDate(29, "S Thomas Cantebury, Bishop Martyr"),
-                    new BasicCalendarDate(30, "S Martina, Virgin Martyr"),
+                    new BasicCalendarDate(30),
                     new BasicCalendarDate(31, "S Silvester, Pope Martyr")
                 }
             ));
+            
 
             SetMovableDaysForAllMonths();
             SetVigilDaysForFeasts();
@@ -886,7 +914,7 @@ namespace Calendar
                 {
                     case 2:
                         //the week after Pentecost
-                        emberDay = new DateTime(Year, Easter.AddDays(45).Month, Easter.AddDays(45).Day);
+                        emberDay = new DateTime(Year, Easter.AddDays(52).Month, Easter.AddDays(52).Day);
                         break;
                     case 3:
                         //the third week of September

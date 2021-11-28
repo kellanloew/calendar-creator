@@ -12,18 +12,21 @@ namespace Calendar
         public bool IsHolyDay { get; set; }
         public bool IsFastDay { get; set; }
         public bool IsAbstinenceDay { get; set; }
+        public int Priority { get; set; }
 
-        public BasicCalendarDate(int date, string title = "", bool isHolyDay = false, bool isFast = false, bool isAbstinence = false, string preTitle = "")
+        public BasicCalendarDate(int date, string title = "", bool isHolyDay = false, bool isFast = false, bool isAbstinence = false, string preTitle = "", int priority = 3)
         {
             Date = date;
             Title = title;
             IsHolyDay = isHolyDay;
             PreTitle = preTitle;
+            Priority = priority;
             if (IsHolyDay)
             {
                 isFast = false;
                 isAbstinence = false;
                 PreTitle = "Holy Day of Obligation";
+                priority = 1;
             }
             IsFastDay = isFast;
             IsAbstinenceDay = isAbstinence;

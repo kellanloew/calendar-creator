@@ -19,12 +19,9 @@ namespace Calendar
             MonthName = name;
             Year = year;
             SaintsList = new List<Dictionary<int, BasicCalendarDate>>();
-            int priority = 3;
             foreach (BasicCalendarDate bcd in saintsList)
             {
-                if (bcd.IsHolyDay) priority = 1;
-                else priority = 3;
-                SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { priority, bcd } });
+                SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { bcd.Priority, bcd } });
             }
             MonthNumber = DateTime.ParseExact(MonthName, "MMMM", CultureInfo.InvariantCulture).Month;
             DaysInMonth = DateTime.DaysInMonth(Year, MonthNumber);
@@ -34,7 +31,7 @@ namespace Calendar
 
         public void AddSpecialFeast(int monthDay, BasicCalendarDate feast, int priority)
         {
-            if(!SaintsList[monthDay].ContainsKey(priority))SaintsList[monthDay].Add(priority, feast);
+            if(!SaintsList[monthDay].ContainsKey(priority)) SaintsList[monthDay].Add(priority, feast);
             else if(!SaintsList[monthDay].ContainsKey(priority + 1)) SaintsList[monthDay].Add(priority + 1, feast);
         }
        
