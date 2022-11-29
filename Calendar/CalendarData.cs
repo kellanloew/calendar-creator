@@ -29,9 +29,9 @@ namespace Calendar
                 Year,
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1, "Circumcision of the Lord", true),
-                    new BasicCalendarDate(2),
-                    new BasicCalendarDate(3),
-                    new BasicCalendarDate(4),
+                    new BasicCalendarDate(2, "Octave day of St. Stephen"),
+                    new BasicCalendarDate(3, "Octave day of St. John Apostle"),
+                    new BasicCalendarDate(4, "Octave day of the Holy Innocents"),
                     new BasicCalendarDate(5, "S Telesphorus, Pope Martyr"),
                     new BasicCalendarDate(6, "Epiphany of the Lord"),
                     new BasicCalendarDate(7),
@@ -89,13 +89,7 @@ namespace Calendar
                     new BasicCalendarDate(20),
                     new BasicCalendarDate(21),
                     new BasicCalendarDate(22, "Chair of S Peter Ap at Antioch; S Paul, Apostle"),
-                    new BasicCalendarDate(23, "S Peter Damian, Bishop Confessor Doctor"),
-                    //new BasicCalendarDate(24),
-                    //new BasicCalendarDate(25, "S Matthias, Apostle"),
-                    //new BasicCalendarDate(26),
-                    //new BasicCalendarDate(27),
-                    //new BasicCalendarDate(28, "S Gabriel of the Sorrowful Virgin, Confessor"),
-                    //new BasicCalendarDate(29)
+                    new BasicCalendarDate(23, "S Peter Damian, Bishop Confessor Doctor")
                 }
             ));
             //add Leap year determined saints days
@@ -186,7 +180,7 @@ namespace Calendar
                     new BasicCalendarDate(25, "S Mark, Evangelist", false, false, false, "", 1),
                     new BasicCalendarDate(26, "SS Cletus & Marcellinus, Popes Martyrs"),
                     new BasicCalendarDate(27, "S Peter Canisius, Confessor Doctor"),
-                    new BasicCalendarDate(28, "S Joseph Husband of the Blessed Virgin Mary, Confessor; S Paul of the Cross, Confessor; S Vitalis, Martyr"),
+                    new BasicCalendarDate(28, "S Paul of the Cross, Confessor; S Vitalis, Martyr"),
                     new BasicCalendarDate(29, "S Peter of Verona, Martyr"),
                     new BasicCalendarDate(30, "S Catherine of Siena, Virgin")
                 }
@@ -227,18 +221,17 @@ namespace Calendar
                     new BasicCalendarDate(28, "S Augustine, Bishop Confessor"),
                     new BasicCalendarDate(29, "S Mary Magdalen de’ Pazzi, Virgin"),
                     new BasicCalendarDate(30, "S Felix, Pope Martyr"),
-                    new BasicCalendarDate(31, "S Petronilla, Virgin")
+                    new BasicCalendarDate(31, "Queenship of the Blessed Virgin; S Angela Merici, Virigin; S Petronilla, Virgin")
                 }
             ));
             AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Finding of the Holy Cross", false, false, false), 1);
-            AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Queenship of the Blessed Virgin", false, false, false), 1);
 
             //June saints
             AllDates.Add(new Month(
                 "June",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "S Angela Merici, Virigin"),
+                    new BasicCalendarDate(1),
                     new BasicCalendarDate(2, "S Marcellinus & Comp., Martyrs"),
                     new BasicCalendarDate(3),
                     new BasicCalendarDate(4, "S Francis Caracciolo, Confessor"),
@@ -377,7 +370,7 @@ namespace Calendar
                     new BasicCalendarDate(17, "Impression of stigmata on S Francis"),
                     new BasicCalendarDate(18, "S Joseph of Cupertino, Confessor"),
                     new BasicCalendarDate(19, "SS Ianuarius & comp., Martyrs"),
-                    new BasicCalendarDate(20, "SS Eustachius & comp. Martyrs"),
+                    new BasicCalendarDate(20, "SS Eustachius & comp. Martyrs", false, false, false, "Vigil of St. Matthew the Apostle"),
                     new BasicCalendarDate(21, "S Matthew, Apostle Evangelist", false, false, false, "", 1),
                     new BasicCalendarDate(22, "S Thomas of Villanova, Bishop Confessor; SS Mauritius & comp., Martyrs"),
                     new BasicCalendarDate(23, "S Linus, Pope Martyr; S Thecla Virgin Martyr"),
@@ -487,7 +480,7 @@ namespace Calendar
                     new BasicCalendarDate(5, "Com. S Sabbas, Abbot"),
                     new BasicCalendarDate(6, "S Nicholas, Bishop Confessor"),
                     new BasicCalendarDate(7, "S Ambrose, Bishop Confessor"),
-                    new BasicCalendarDate(8, "IMMACULATE CONCEPTION", true),
+                    new BasicCalendarDate(8, "IMMACULATE CONCEPTION", true, false, false, "", 1),
                     new BasicCalendarDate(9),
                     new BasicCalendarDate(10),
                     new BasicCalendarDate(11, "S Damasus, Pope"),
@@ -499,7 +492,7 @@ namespace Calendar
                     new BasicCalendarDate(17),
                     new BasicCalendarDate(18),
                     new BasicCalendarDate(19),
-                    new BasicCalendarDate(20),
+                    new BasicCalendarDate(20, "Vigil of St. Thomas the Apostle"),
                     new BasicCalendarDate(21, "S Thomas the Apostle, Martyr", false, false, false, "", 1),
                     new BasicCalendarDate(22),
                     new BasicCalendarDate(23),
@@ -729,7 +722,7 @@ namespace Calendar
                             sundayName = "Second Sunday of Advent";
                             break;
                         case 2:
-                            sundayName = "Laetare Sunday";
+                            sundayName = "Gaudete Sunday";
                             break;
                         case 3:
                             sundayName = "Fourth Sunday of Advent";
@@ -747,7 +740,7 @@ namespace Calendar
 
         public string ReturnPreHTML()
         {
-            return "<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width = device-width, initial-scale=1\"><style>p{margin:0;}.special{font-weight:bold;} table {font-family: \"Century Schoolbook L\", \"Century Schoolbook\", serif; font-size: 10px; border-collapse:collapse; text-align: right; vertical-align: bottom; break-before: page; page-break-before: always;}tr.h {text-align:center;}tr.h, tr.nos {font-size: 2rem;}tr.nos td {border-top: 1px solid black; vertical-align: top;} *{font - size: 1em!important;line - height: 1!important;} tr.ss td, tr.nos td {border-left: 1px solid black; border-right: 1px solid black; height: 7vh; width: 14vw;}tr.ss {border-bottom: 1px solid black; vertical-align: bottom;}tr.wd {}</style></head><body><table style=\"break-before: page-avoid; page-break-before: avoid;\">";
+            return "<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width = device-width, initial-scale=1\"><style>p{margin:0;}.special{font-weight:bold;} table {font-family: \"Century Schoolbook L\", \"Century Schoolbook\", serif; font-size: 10px; border-collapse:collapse; text-align: right; vertical-align: bottom; break-before: page; page-break-before: always;}tr.h {text-align:center;}tr.h, tr.nos {font-size: 1.5rem;}tr.nos td {border-top: 1px solid black; vertical-align: top;} *{font - size: 1em!important;line - height: 1!important;} tr.ss td, tr.nos td {border-left: 1px solid black; border-right: 1px solid black; height: 7.4vh; width: 14vw;}tr.ss {border-bottom: 1px solid black; vertical-align: bottom;}tr.wd {}</style></head><body><table style=\"break-before: page-avoid; page-break-before: avoid;\">";
         }
 
         private void CreateHtmlFromSaintData()
@@ -790,7 +783,7 @@ namespace Calendar
 
                     //subrow for saints title
                     HTML += "<tr class='ss'>";
-                    for (int i = 1; i <= 7; i++)
+                    for (int day = 1; day <= 7; day++)
                     {
                         int monthDay = currentBlockSaints - m.FirstDay - 1;
                         HTML += "<td>";
@@ -798,7 +791,7 @@ namespace Calendar
                         if (currentBlockSaints >= m.FirstDay + 1 && monthDay < m.DaysInMonth)
                         {
                             //only show the pretitle if it's not a sunday
-                            if(i != 1)
+                            if(day != 1)
                             {
                                 for(int k = 1; k <= 3; k++)
                                 {
@@ -828,12 +821,12 @@ namespace Calendar
                                 }
 
                                 //if this is a sunday
-                                if (c == 2 && i == 1)
+                                if (c == 2 && day == 1)
                                 {
                                     tempHTML += GetSundayFromMonthAndDay(m.MonthNumber, monthDay + 1);
                                     currentTitleExists = true;
                                 }
-                                if (currentTitleExists && previousTitleExists && tempHTML.Length > 0) HTML += "; ";
+                                if (currentTitleExists && previousTitleExists && tempHTML.Length > 0 && m.MonthNumber != 11 && monthDay != 24) HTML += "; ";
 
                                 if (currentTitleExists) previousTitleExists = true;
 
@@ -905,6 +898,9 @@ namespace Calendar
 
             //set first ember day of year
             DateTime emberDay = new DateTime(Year, Easter.AddDays(-39).Month, Easter.AddDays(-39).Day);
+
+            int emberMonth = 0;
+            int ember_day = 0;
             
             //Set ember days
             for (int i = 1; i <= 4; i++)
@@ -928,9 +924,17 @@ namespace Calendar
                 //set ember wednesday
                 AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day - 1, new BasicCalendarDate(emberDay.Day, "", false, true, true, "Ember Wednesday"), 2);
                 //set ember friday
-                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day + 1, new BasicCalendarDate(emberDay.Day, "", false, true, true,"Ember Friday"), 2);
+                emberMonth = emberDay.Month - 1;
+                ember_day = emberDay.Day + 1;
+                if ( emberDay.Day <= DateTime.DaysInMonth(Year, emberDay.Month) )
+                {
+                    var tomorrow = new DateTime(Year, emberDay.Month, emberDay.Day).AddDays(2).Date;
+                    ember_day = tomorrow.Day - 1;
+                    emberMonth = tomorrow.Month - 1;
+                }
+                AllDates[emberMonth].AddSpecialFeast(ember_day, new BasicCalendarDate(emberDay.Day, "", false, true, true,"Ember Friday"), 2);
                 //set ember saturday
-                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day + 2, new BasicCalendarDate(emberDay.Day, "", false, true, true, "Ember Saturday"), 2);
+                AllDates[emberMonth].AddSpecialFeast(ember_day + 1, new BasicCalendarDate(emberDay.Day + 1, "", false, true, true, "Ember Saturday"), 2);
             }
 
             //Ascension Thursday
@@ -954,6 +958,9 @@ namespace Calendar
             CK = CK.AddMonths(1).AddDays(-1);
             while (CK.DayOfWeek != DayOfWeek.Sunday) CK = CK.AddDays(-1);
             AllDates[CK.Month - 1].AddSpecialFeast(CK.Day - 1, new BasicCalendarDate(CK.Day, "Christ The King", false, false, false), 1);
+
+            DateTime StJoseph = Easter.AddDays(17);
+            AllDates[StJoseph.Month - 1].AddSpecialFeast(StJoseph.Day - 1, new BasicCalendarDate(StJoseph.Day, "S Joseph Husband of the Blessed Virgin Mary, Confessor", false, false, false), 2);
 
             //set all days of Lent as fast days
             setDaysOfLentAsFastDays();
