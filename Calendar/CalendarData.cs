@@ -12,6 +12,12 @@ namespace Calendar
         public string HTML = "";
         public DateTime Easter;
         public DateTime FirstSundayAdvent;
+        public int LowestPriority = 4;
+
+        private bool AnnunciationFallsDuringHolyWeek()
+        {
+           return DateTime.Compare(new DateTime(Year, 3, 25), Easter.AddDays(-1)) < 0 && DateTime.Compare(new DateTime(Year, 3, 25), Easter.AddDays(-7)) > 0;
+        }
         
         public CalendarData(int year)
         {
@@ -28,7 +34,7 @@ namespace Calendar
                 "January", 
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "Circumcision of the Lord", true),
+                    new BasicCalendarDate(1, "Circumcision of the Lord", 1, true, false, false),
                     new BasicCalendarDate(2, "Octave day of St. Stephen"),
                     new BasicCalendarDate(3, "Octave day of St. John Apostle"),
                     new BasicCalendarDate(4, "Octave day of the Holy Innocents"),
@@ -61,6 +67,12 @@ namespace Calendar
                     new BasicCalendarDate(30, "S John Bosco, Confessor")
                 }
             ));
+            int holyName = NthWeekDayOfMonthYear(1, Year, "Sunday", 1).Day;
+            DayOfWeek holyNameDayOfWeek = NthWeekDayOfMonthYear(1, Year, "Sunday", 1).DayOfWeek;
+            if ( holyName > 0 && holyName < 6 && holyNameDayOfWeek != DayOfWeek.Sunday)
+            {
+                AllDates[0].AddSpecialFeast(2, new BasicCalendarDate(2, "Holy Name of Jesus"), 3);
+            }
 
             //February saints
             AllDates.Add(new Month(
@@ -68,7 +80,7 @@ namespace Calendar
                 Year,
                 new List<BasicCalendarDate>{
                     new BasicCalendarDate(1, "S Ignatius"),
-                    new BasicCalendarDate(2, "Purification of the Blessed Virgin Mary", false, false, false, "", 1),
+                    new BasicCalendarDate(2, "Purification of the Blessed Virgin Mary", 3),
                     new BasicCalendarDate(3, "S Blase"),
                     new BasicCalendarDate(4, "S Andrew Corsini"),
                     new BasicCalendarDate(5, "S Agatha"),
@@ -92,23 +104,28 @@ namespace Calendar
                     new BasicCalendarDate(23, "S Peter Damian, Bishop Confessor Doctor")
                 }
             ));
+
             //add Leap year determined saints days
             int offset = 0;
             if (AllDates[1].DaysInMonth == 29)
             {
                 offset = 1;
-                AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(24) } });
+                AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(24) } });
             }
 
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(24 + offset, "S Matthias, Apostle", false, false, false, "", 1) } });
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(25 + offset) } });
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(26 + offset) } });
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(27 + offset) } });
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(28 + offset, "S Gabriel of the Sorrowful Virgin, Confessor") } });
-            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 3, new BasicCalendarDate(29 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { 2, new BasicCalendarDate(24 + offset, "S Matthias, Apostle", 2) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(25 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(26 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(27 + offset) } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(28 + offset, "S Gabriel of the Sorrowful Virgin, Confessor") } });
+            AllDates[1].SaintsList.Add(new Dictionary<int, BasicCalendarDate> { { Environment.LowestPriority, new BasicCalendarDate(29 + offset) } });
 
 
-
+            string Annunciation = "Annunciation to the Blessed Virgin Mary";
+            if (this.AnnunciationFallsDuringHolyWeek())
+            {
+                Annunciation = "";
+            }
             //March saints
             AllDates.Add(new Month(
                 "March",
@@ -132,13 +149,13 @@ namespace Calendar
                     new BasicCalendarDate(16),
                     new BasicCalendarDate(17, "S Patrick, Bishop Confessor"),
                     new BasicCalendarDate(18, "S Cyril, Bishop Confessor Doctor"),
-                    new BasicCalendarDate(19, "S Joseph, Confessor"),
+                    new BasicCalendarDate(19, "S Joseph, Confessor", 3),
                     new BasicCalendarDate(20),
                     new BasicCalendarDate(21, "S Benedict, Abbot"),
                     new BasicCalendarDate(22),
                     new BasicCalendarDate(23),
                     new BasicCalendarDate(24, "S Gabriel Archangel"),
-                    new BasicCalendarDate(25, "Annunciation to the Blessed Virgin Mary"),
+                    new BasicCalendarDate(25, Annunciation),
                     new BasicCalendarDate(26),
                     new BasicCalendarDate(27, "S John of Damascus, Confessor Doctor"),
                     new BasicCalendarDate(28, "S John of Capestrano, Confessor"),
@@ -177,7 +194,7 @@ namespace Calendar
                     new BasicCalendarDate(22, "SS Soter and Caius, Popes Martyrs"),
                     new BasicCalendarDate(23, "S George, Martyr"),
                     new BasicCalendarDate(24, "S Fidelis of Sigmaringen, Martyr"),
-                    new BasicCalendarDate(25, "S Mark, Evangelist", false, false, false, "", 1),
+                    new BasicCalendarDate(25, "S Mark, Evangelist", 3),
                     new BasicCalendarDate(26, "SS Cletus & Marcellinus, Popes Martyrs"),
                     new BasicCalendarDate(27, "S Peter Canisius, Confessor Doctor"),
                     new BasicCalendarDate(28, "S Paul of the Cross, Confessor; S Vitalis, Martyr"),
@@ -186,12 +203,17 @@ namespace Calendar
                 }
             ));
 
+            if (AnnunciationFallsDuringHolyWeek())
+            {
+                AllDates[Easter.AddDays(7).Month - 1].AddSpecialFeast(Easter.AddDays(7).Day, new BasicCalendarDate(Easter.AddDays(7).Day, "Annunciation to the Blessed Virgin Mary"), 3);
+            }
+
             //May saints
             AllDates.Add(new Month(
                 "May",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "SS Philip & James, Apostles", false, false, false, "", 1),
+                    new BasicCalendarDate(1, "SS Philip & James, Apostles", 1),
                     new BasicCalendarDate(2, "S Athanasius, Bishop Confessor Doctor"),
                     new BasicCalendarDate(3, "SS Alexander & Comp., Martyrs"),
                     new BasicCalendarDate(4, "S Monica, Widow"),
@@ -224,7 +246,7 @@ namespace Calendar
                     new BasicCalendarDate(31, "Queenship of the Blessed Virgin; S Angela Merici, Virigin; S Petronilla, Virgin")
                 }
             ));
-            AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Finding of the Holy Cross", false, false, false), 1);
+            AllDates[4].AddSpecialFeast(2, new BasicCalendarDate(2, "Finding of the Holy Cross"), 3);
 
             //June saints
             AllDates.Add(new Month(
@@ -294,7 +316,7 @@ namespace Calendar
                     new BasicCalendarDate(23, "S Apollinaris, Bishop Martyr; S Liborius, Bishop Confessor"),
                     new BasicCalendarDate(24, "S Christina, Virgin Martyr"),
                     new BasicCalendarDate(25, "S Christopher, Martyr"),
-                    new BasicCalendarDate(26, "S Anne Mother of the Blessed Virgin Mary", false, false, false, "", 1),
+                    new BasicCalendarDate(26, "S Anne Mother of the Blessed Virgin Mary", 3),
                     new BasicCalendarDate(27, "S Pantaleon, Martyr"),
                     new BasicCalendarDate(28, "SS Nazarius & Comp., Martyrs"),
                     new BasicCalendarDate(29, "S Martha, Virgin; SS Felix &c Comp., Martyrs"),
@@ -302,8 +324,8 @@ namespace Calendar
                     new BasicCalendarDate(31, "S Ignatius, Confesor")
                 }
             ));
-            AllDates[6].AddSpecialFeast(24, new BasicCalendarDate(24, "S James, Apostle", false, false, false), 1);
-            AllDates[6].AddSpecialFeast(1, new BasicCalendarDate(1, "Visitation of the Blessed Virgin Mary", false, false, false), 1);
+            AllDates[6].AddSpecialFeast(24, new BasicCalendarDate(24, "S James, Apostle"), 3);
+            AllDates[6].AddSpecialFeast(1, new BasicCalendarDate(1, "Visitation of the Blessed Virgin Mary"), 3);
 
             //August saints
             AllDates.Add(new Month(
@@ -319,13 +341,13 @@ namespace Calendar
                     new BasicCalendarDate(7, "S Cajetan, Confessor; S Donatus Bishop Martyr"),
                     new BasicCalendarDate(8, "SS Cyriacus & Comp., Martyrs"),
                     new BasicCalendarDate(9, "S John Vianney, Confessor; S Romanus Martyr"),
-                    new BasicCalendarDate(10, "S Lawrence, Martyr", false, false, false, "", 1),
+                    new BasicCalendarDate(10, "S Lawrence, Martyr", 3),
                     new BasicCalendarDate(11, "SS Tiburtius, Martyr & Susanna, Virgin Martyr"),
                     new BasicCalendarDate(12, "S Clare, Virgin"),
                     new BasicCalendarDate(13, "SS Hippolytus & Cassianus, Martyrs"),
-                    new BasicCalendarDate(14, "S Eusebius, Confessor", false, true, true),
-                    new BasicCalendarDate(15, "Assumption of the Blessed Virgin Mary", true),
-                    new BasicCalendarDate(16, "S Joachim Father of the Blessed Virgin Mary, Confessor", false, false, false, "", 1),
+                    new BasicCalendarDate(14, "S Eusebius, Confessor"),
+                    new BasicCalendarDate(15, "Assumption of the Blessed Virgin Mary", 1, true, false, false),
+                    new BasicCalendarDate(16, "S Joachim Father of the Blessed Virgin Mary, Confessor", 3),
                     new BasicCalendarDate(17, "S Hyacinth, Confessor"),
                     new BasicCalendarDate(18),
                     new BasicCalendarDate(19, "S John Eudes, Confessor"),
@@ -333,7 +355,7 @@ namespace Calendar
                     new BasicCalendarDate(21, "S Jane Frances de Chantal, Widow"),
                     new BasicCalendarDate(22, "SS Timothy & Comp., Martyrs"),
                     new BasicCalendarDate(23, "S Philip Benizi, Confessor"),
-                    new BasicCalendarDate(24, "S Bartholomew, Apostle", false, false, false, "", 1),
+                    new BasicCalendarDate(24, "S Bartholomew, Apostle", 3),
                     new BasicCalendarDate(25, "S Louis, King Confessor"),
                     new BasicCalendarDate(26, "S Zephyrinus, Martyr"),
                     new BasicCalendarDate(27, "S Joseph Calasanctius, Confessor"),
@@ -343,8 +365,8 @@ namespace Calendar
                     new BasicCalendarDate(31, "S Raymond Nonnatus, Confessor")
                 }
             ));
-            AllDates[7].AddSpecialFeast(21, new BasicCalendarDate(21, "Immaculate Heart of the Blessed Virgin Mary", false, false, false), 1);
-            AllDates[7].AddSpecialFeast(5, new BasicCalendarDate(5, "Transfiguration of the Lord", false, false, false), 1);
+            AllDates[7].AddSpecialFeast(21, new BasicCalendarDate(21, "Immaculate Heart of the Blessed Virgin Mary"), 3);
+            AllDates[7].AddSpecialFeast(5, new BasicCalendarDate(5, "Transfiguration of the Lord"), 3);
 
             //September saints
             AllDates.Add(new Month(
@@ -370,8 +392,8 @@ namespace Calendar
                     new BasicCalendarDate(17, "Impression of stigmata on S Francis"),
                     new BasicCalendarDate(18, "S Joseph of Cupertino, Confessor"),
                     new BasicCalendarDate(19, "SS Ianuarius & comp., Martyrs"),
-                    new BasicCalendarDate(20, "SS Eustachius & comp. Martyrs", false, false, false, "Vigil of St. Matthew the Apostle"),
-                    new BasicCalendarDate(21, "S Matthew, Apostle Evangelist", false, false, false, "", 1),
+                    new BasicCalendarDate(20, "SS Eustachius & comp. Martyrs", 4, false, false, false, "Vigil of St. Matthew the Apostle"),
+                    new BasicCalendarDate(21, "S Matthew, Apostle Evangelist", 3),
                     new BasicCalendarDate(22, "S Thomas of Villanova, Bishop Confessor; SS Mauritius & comp., Martyrs"),
                     new BasicCalendarDate(23, "S Linus, Pope Martyr; S Thecla Virgin Martyr"),
                     new BasicCalendarDate(24, "Blessed Virgin Mary of Ransom"),
@@ -383,8 +405,8 @@ namespace Calendar
                     new BasicCalendarDate(30, "S Jerome, Confessor Doctor"),
                 }
             ));
-            AllDates[8].AddSpecialFeast(7, new BasicCalendarDate(7, "Birth of the Blessed Virgin Mary", false, false, false), 1);
-            AllDates[8].AddSpecialFeast(14, new BasicCalendarDate(14, "Seven Sorrows of the Blessed Virgin Mary", false, false, false), 1);
+            AllDates[8].AddSpecialFeast(7, new BasicCalendarDate(7, "Birth of the Blessed Virgin Mary"), 3);
+            AllDates[8].AddSpecialFeast(14, new BasicCalendarDate(14, "Seven Sorrows of the Blessed Virgin Mary"), 3);
 
 
             //October saints
@@ -402,14 +424,14 @@ namespace Calendar
                     new BasicCalendarDate(8, "S Brigid Widow"),
                     new BasicCalendarDate(9, "SS Dionysius & MM"),
                     new BasicCalendarDate(10, "S Francis Borgia Confessor"),
-                    new BasicCalendarDate(11, "Motherhood of the Blessed Virgin Mary", false, false, false, "", 1),
+                    new BasicCalendarDate(11, "Motherhood of the Blessed Virgin Mary", 3),
                     new BasicCalendarDate(12),
                     new BasicCalendarDate(13, "S Edward, Confessor"),
                     new BasicCalendarDate(14),
                     new BasicCalendarDate(15, "S Teresa, Virgin"),
                     new BasicCalendarDate(16, "S Hedwig, Widow"),
                     new BasicCalendarDate(17, "S Margaret Mary Alacoque Virgin"),
-                    new BasicCalendarDate(18, "S Luke Evangelist", false, false, false, "", 1),
+                    new BasicCalendarDate(18, "S Luke Evangelist", 3),
                     new BasicCalendarDate(19, "S Peter of Alcántara Confessor"),
                     new BasicCalendarDate(20, "S John Cantius Confessor"),
                     new BasicCalendarDate(21, "S Hilarion, Abbot; SS. Ursula & Comp., Virgin Martyrs"),
@@ -425,7 +447,7 @@ namespace Calendar
                     new BasicCalendarDate(31)
                 }
             ));
-            AllDates[9].AddSpecialFeast(6, new BasicCalendarDate(6, "Most Holy Rosary of the Blessed Virgin Mary", false, false, false), 1);
+            AllDates[9].AddSpecialFeast(6, new BasicCalendarDate(6, "Most Holy Rosary of the Blessed Virgin Mary"), 3);
 
 
             //November saints
@@ -433,7 +455,7 @@ namespace Calendar
                 "November",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "ALL SAINTS", true),
+                    new BasicCalendarDate(1, "ALL SAINTS", 1, true, false, false),
                     new BasicCalendarDate(2, "ALL SOULS"),
                     new BasicCalendarDate(3),
                     new BasicCalendarDate(4, "S Charles Borromeo, Confessor"),
@@ -462,10 +484,10 @@ namespace Calendar
                     new BasicCalendarDate(27),
                     new BasicCalendarDate(28),
                     new BasicCalendarDate(29, "S Saturninus, Martyr"),
-                    new BasicCalendarDate(30, "S Andrew the Apostle", false, false, false, "", 1)
+                    new BasicCalendarDate(30, "S Andrew the Apostle", 1)
                 }
             ));
-            AllDates[10].AddSpecialFeast(8, new BasicCalendarDate(8, "Dedication of the Most Holy Redeemer", false, false, false), 1);
+            AllDates[10].AddSpecialFeast(8, new BasicCalendarDate(8, "Dedication of the Most Holy Redeemer", 3), 3);
 
 
             //December saints
@@ -480,7 +502,7 @@ namespace Calendar
                     new BasicCalendarDate(5, "Com. S Sabbas, Abbot"),
                     new BasicCalendarDate(6, "S Nicholas, Bishop Confessor"),
                     new BasicCalendarDate(7, "S Ambrose, Bishop Confessor"),
-                    new BasicCalendarDate(8, "IMMACULATE CONCEPTION", true, false, false, "", 1),
+                    new BasicCalendarDate(8, "IMMACULATE CONCEPTION", 1, true, false, false),
                     new BasicCalendarDate(9),
                     new BasicCalendarDate(10),
                     new BasicCalendarDate(11, "S Damasus, Pope"),
@@ -493,20 +515,19 @@ namespace Calendar
                     new BasicCalendarDate(18),
                     new BasicCalendarDate(19),
                     new BasicCalendarDate(20, "Vigil of St. Thomas the Apostle"),
-                    new BasicCalendarDate(21, "S Thomas the Apostle, Martyr", false, false, false, "", 1),
+                    new BasicCalendarDate(21, "S Thomas the Apostle, Martyr", 2),
                     new BasicCalendarDate(22),
                     new BasicCalendarDate(23),
-                    new BasicCalendarDate(24, "CHRISTMAS EVE", false, true, true),
-                    new BasicCalendarDate(25, "CHRISTMAS DAY; Com. S Anastasia, Martyr", true),
-                    new BasicCalendarDate(26, "S Stephen, Martyr", false, false, false, "", 1),
-                    new BasicCalendarDate(27, "S John the Apostle", false, false, false, "", 1),
-                    new BasicCalendarDate(28, "Holy Innocents, Martyrs", false, false, false, "", 1),
+                    new BasicCalendarDate(24, "CHRISTMAS EVE", 2, false, true, true),
+                    new BasicCalendarDate(25, "CHRISTMAS DAY; Com. S Anastasia, Martyr", 1, true),
+                    new BasicCalendarDate(26, "S Stephen, Martyr", 2),
+                    new BasicCalendarDate(27, "S John the Apostle", 2),
+                    new BasicCalendarDate(28, "Holy Innocents, Martyrs", 2),
                     new BasicCalendarDate(29, "S Thomas Cantebury, Bishop Martyr"),
                     new BasicCalendarDate(30),
                     new BasicCalendarDate(31, "S Silvester, Pope Martyr")
                 }
             ));
-            
 
             SetMovableDaysForAllMonths();
             SetVigilDaysForFeasts();
@@ -593,6 +614,7 @@ namespace Calendar
                 }
                
             }
+            // Easter Sunday
             else if (DateTime.Compare(inputDate, Easter) == 0)
             {
                 //Add Easter to List of Special feasts
@@ -772,7 +794,7 @@ namespace Calendar
                                 (i != 1 && m.isFastDay(monthDay - 1)) HTML += "&#x1F37D;";
 
                             //if it's a abstinence day, show the fish symbol
-                            if(m.isAbstinenceDay(monthDay - 1, i)) HTML += "&#x1f41f;&#xfe0e;";
+                            if(m.isAbstinenceDay(monthDay - 1, m.MonthNumber, i)) HTML += "&#x1f41f;&#xfe0e;";
 
                             HTML += monthDay.ToString();
                         }
@@ -793,7 +815,7 @@ namespace Calendar
                             //only show the pretitle if it's not a sunday
                             if(day != 1)
                             {
-                                for(int k = 1; k <= 3; k++)
+                                for(int k = 1; k <= Environment.LowestPriority; k++)
                                 {
                                     if (m.SaintsList[monthDay].ContainsKey(k) && m.SaintsList[monthDay][k].PreTitle.Length > 0)
                                     {
@@ -806,7 +828,7 @@ namespace Calendar
                             bool previousTitleExists = false;
                             bool currentTitleExists = false;
 
-                            for(int c = 1; c < 4; c++)
+                            for(int c = 1; c <= Environment.LowestPriority; c++)
                             {
                                 tempHTML = "";
 
@@ -821,12 +843,12 @@ namespace Calendar
                                 }
 
                                 //if this is a sunday
-                                if (c == 2 && day == 1)
+                                if (c == 3 && day == 1)
                                 {
                                     tempHTML += GetSundayFromMonthAndDay(m.MonthNumber, monthDay + 1);
-                                    currentTitleExists = true;
+                                    if(tempHTML.Length > 1) currentTitleExists = true;
                                 }
-                                if (currentTitleExists && previousTitleExists && tempHTML.Length > 0 && m.MonthNumber != 11 && monthDay != 24) HTML += "; ";
+                                if (currentTitleExists && previousTitleExists && tempHTML.Length > 0 && (m.MonthNumber != 11 || monthDay != 24)) HTML += "; ";
 
                                 if (currentTitleExists) previousTitleExists = true;
 
@@ -884,26 +906,26 @@ namespace Calendar
         {
             //set Ash Wednesday
             DateTime AshWednesday = Easter.AddDays(-46);
-            AllDates[AshWednesday.Month - 1].AddSpecialFeast(AshWednesday.Day - 1, new BasicCalendarDate(AshWednesday.Day, "ASH WEDNESDAY", false, true, true), 1);
+            AllDates[AshWednesday.Month - 1].AddSpecialFeast(AshWednesday.Day - 1, new BasicCalendarDate(AshWednesday.Day, "ASH WEDNESDAY", 1, false, true, true), 1);
 
             //set holy thursday - holy saturday
             DateTime HolyThursday = Easter.AddDays(-3);
-            AllDates[HolyThursday.Month - 1].AddSpecialFeast(HolyThursday.Day - 1, new BasicCalendarDate(HolyThursday.Day, "HOLY THURSDAY", false, true, false), 1);
+            AllDates[HolyThursday.Month - 1].AddSpecialFeast(HolyThursday.Day - 1, new BasicCalendarDate(HolyThursday.Day, "HOLY THURSDAY", 1, false, true, false), 1);
 
             DateTime GoodFriday = Easter.AddDays(-2);
-            AllDates[GoodFriday.Month - 1].AddSpecialFeast(GoodFriday.Day - 1, new BasicCalendarDate(GoodFriday.Day, "GOOD FRIDAY", false, true, true), 1);
+            AllDates[GoodFriday.Month - 1].AddSpecialFeast(GoodFriday.Day - 1, new BasicCalendarDate(GoodFriday.Day, "GOOD FRIDAY", 1, false, true, true), 1);
 
             DateTime HolySaturday = Easter.AddDays(-1);
-            AllDates[HolySaturday.Month - 1].AddSpecialFeast(HolySaturday.Day - 1, new BasicCalendarDate(HolySaturday.Day, "HOLY SATURDAY", false, true, true), 1);
+            AllDates[HolySaturday.Month - 1].AddSpecialFeast(HolySaturday.Day - 1, new BasicCalendarDate(HolySaturday.Day, "HOLY SATURDAY", 1, false, true, true), 1);
 
             //set first ember day of year
             DateTime emberDay = new DateTime(Year, Easter.AddDays(-39).Month, Easter.AddDays(-39).Day);
 
             int emberMonth = 0;
             int ember_day = 0;
-            
+                        for (int i = 1; i <= 4; i++)
+
             //Set ember days
-            for (int i = 1; i <= 4; i++)
             {
                 
                 switch (i)
@@ -914,7 +936,7 @@ namespace Calendar
                         break;
                     case 3:
                         //the third week of September
-                        emberDay = NthWeekDayOfMonthYear(9, Year, 0, 3).AddDays(3);
+                        emberDay = NthWeekDayOfMonthYear(9, Year, "Wednesday", 3);
                         break;
                     case 4:
                         //the third week of Advent
@@ -922,7 +944,7 @@ namespace Calendar
                         break;
                 }
                 //set ember wednesday
-                AllDates[emberDay.Month - 1].AddSpecialFeast(emberDay.Day - 1, new BasicCalendarDate(emberDay.Day, "", false, true, true, "Ember Wednesday"), 2);
+                AllDates[emberDay.Month - 1].AddEmberDay(emberDay.Day - 1, "Ember Wednesday"); // AllDates[emberDay.Month - 1].EmberDays.Add(emberDay.Day - 1, new BasicCalendarDate(emberDay.Day - 1, "", Environment.LowestPriority - 1, false, true, true, "Ember Wednesday"));
                 //set ember friday
                 emberMonth = emberDay.Month - 1;
                 ember_day = emberDay.Day + 1;
@@ -932,35 +954,36 @@ namespace Calendar
                     ember_day = tomorrow.Day - 1;
                     emberMonth = tomorrow.Month - 1;
                 }
-                AllDates[emberMonth].AddSpecialFeast(ember_day, new BasicCalendarDate(emberDay.Day, "", false, true, true,"Ember Friday"), 2);
+                AllDates[emberMonth].AddEmberDay(ember_day, "Ember Friday"); //AllDates[emberMonth].EmberDays.Add(emberDay.Day, new BasicCalendarDate(emberDay.Day, "", Environment.LowestPriority - 1, false, true, true, "Ember Friday"));
+
                 //set ember saturday
-                AllDates[emberMonth].AddSpecialFeast(ember_day + 1, new BasicCalendarDate(emberDay.Day + 1, "", false, true, true, "Ember Saturday"), 2);
+                AllDates[emberMonth].AddEmberDay(ember_day + 1, "Ember Saturday"); // EmberDays.Add(emberDay.Day + 1, new BasicCalendarDate(emberDay.Day + 1, "", Environment.LowestPriority - 1, false, true, true, "Ember Saturday"));
             }
 
             //Ascension Thursday
             DateTime Ascension = Easter.AddDays(39);
-            AllDates[Ascension.Month - 1].AddSpecialFeast(Ascension.Day - 1, new BasicCalendarDate(Ascension.Day, "ASCENSION DAY", true, false, false), 1);
+            AllDates[Ascension.Month - 1].AddSpecialFeast(Ascension.Day - 1, new BasicCalendarDate(Ascension.Day, "ASCENSION DAY", 1, true, false, false), 1);
 
             //Vigil of Pentecost
             DateTime VigilPentecost = Easter.AddDays(48);
-            AllDates[VigilPentecost.Month - 1].AddSpecialFeast(VigilPentecost.Day - 1, new BasicCalendarDate(VigilPentecost.Day, "Vigil Pentecost", false, true, true), 2);
+            AllDates[VigilPentecost.Month - 1].AddSpecialFeast(VigilPentecost.Day - 1, new BasicCalendarDate(VigilPentecost.Day, "Vigil Pentecost", 2, false, true, true), 2);
 
             //Corpus Christi (Thursday after Trinity Sunday)
             DateTime CorpusChristi = Easter.AddDays(60);
-            AllDates[CorpusChristi.Month - 1].AddSpecialFeast(CorpusChristi.Day - 1, new BasicCalendarDate(CorpusChristi.Day, "Corpus Christi", false, false, false), 2);
+            AllDates[CorpusChristi.Month - 1].AddSpecialFeast(CorpusChristi.Day - 1, new BasicCalendarDate(CorpusChristi.Day, "Corpus Christi", 2, false, false, false), 2);
 
             //Sacred Heart
             DateTime SacredHeart = Easter.AddDays(68);
-            AllDates[SacredHeart.Month - 1].AddSpecialFeast(SacredHeart.Day - 1, new BasicCalendarDate(SacredHeart.Day, "Sacred Heart of Jesus", false, false, true), 2);
+            AllDates[SacredHeart.Month - 1].AddSpecialFeast(SacredHeart.Day - 1, new BasicCalendarDate(SacredHeart.Day, "Sacred Heart of Jesus", 2, false, false, true), 2);
 
             //Christ The King
             DateTime CK = new DateTime(Year, 10, 1);
             CK = CK.AddMonths(1).AddDays(-1);
             while (CK.DayOfWeek != DayOfWeek.Sunday) CK = CK.AddDays(-1);
-            AllDates[CK.Month - 1].AddSpecialFeast(CK.Day - 1, new BasicCalendarDate(CK.Day, "Christ The King", false, false, false), 1);
+            AllDates[CK.Month - 1].AddSpecialFeast(CK.Day - 1, new BasicCalendarDate(CK.Day, "Christ The King", 1), 1);
 
             DateTime StJoseph = Easter.AddDays(17);
-            AllDates[StJoseph.Month - 1].AddSpecialFeast(StJoseph.Day - 1, new BasicCalendarDate(StJoseph.Day, "S Joseph Husband of the Blessed Virgin Mary, Confessor", false, false, false), 2);
+            AllDates[StJoseph.Month - 1].AddSpecialFeast(StJoseph.Day - 1, new BasicCalendarDate(StJoseph.Day, "S Joseph Husband of the Blessed Virgin Mary, Confessor", 2), 2);
 
             //set all days of Lent as fast days
             setDaysOfLentAsFastDays();
@@ -972,18 +995,18 @@ namespace Calendar
             //Assumption
             DateTime Assumption = new DateTime(Year, 8, 14);
             if (Assumption.DayOfWeek == DayOfWeek.Sunday) Assumption = Assumption.AddDays(-1);
-            AllDates[Assumption.Month - 1].AddSpecialFeast(Assumption.Day - 1, new BasicCalendarDate(Assumption.Day, "Vigil of the Assumption", false, true, true), 1);
+            AllDates[Assumption.Month - 1].AddSpecialFeast(Assumption.Day - 1, new BasicCalendarDate(Assumption.Day, "Vigil of the Assumption"), 1);
 
 
             //All saints
             DateTime AllSaints = new DateTime(Year, 10, 31);
             if (AllSaints.DayOfWeek == DayOfWeek.Sunday) AllSaints = AllSaints.AddDays(-1);
-            AllDates[AllSaints.Month - 1].AddSpecialFeast(AllSaints.Day - 1, new BasicCalendarDate(AllSaints.Day, "Vigil of All Saints", false, true, true), 1);
+            AllDates[AllSaints.Month - 1].AddSpecialFeast(AllSaints.Day - 1, new BasicCalendarDate(AllSaints.Day, "Vigil of All Saints", 2, false, true, true), 2);
 
             //Immaculate Conception
             DateTime ImmConception = new DateTime(Year, 12, 7);
             if (ImmConception.DayOfWeek == DayOfWeek.Sunday) ImmConception = ImmConception.AddDays(-1);
-            AllDates[ImmConception.Month - 1].AddSpecialFeast(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of Immaculate Conception", false, true, true), 1);
+            AllDates[ImmConception.Month - 1].AddSpecialFeast(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of Immaculate Conception", 3, false, true, true), 3);
         }
 
         private void setDaysOfLentAsFastDays()
@@ -991,26 +1014,46 @@ namespace Calendar
             DateTime currentLentDay = Easter.AddDays(-46);
             for(int i = 0; i < 44; i++)
             {
-                if (currentLentDay.DayOfWeek != 0) AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1][3].IsFastDay = true;
+                if (currentLentDay.DayOfWeek != 0)
+                {
+                    if(AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1].ContainsKey(4)) AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1][4].IsFastDay = true;
+                    if (AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1].ContainsKey(3)) AllDates[currentLentDay.Month - 1].SaintsList[currentLentDay.Day - 1][3].IsFastDay = true;
+                }
                 currentLentDay = currentLentDay.AddDays(1);
             }
         }
 
-        private DateTime NthWeekDayOfMonthYear(int monthNumber, int year, int givenWeekDay, int whichWeek)
+        private DateTime NthWeekDayOfMonthYear(int month, int year, string givenWeekDay, int whichWeek)
         {
-            DateTime first = new DateTime(year, monthNumber, 1);
-            DateTime returnDate = first;
-            int firstWeekDay = (int)first.DayOfWeek - 1;
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentOutOfRangeException("Invalid month value.");
+            }
 
-            if (firstWeekDay < givenWeekDay)
+            // validate the nth value
+            if (whichWeek < 0 || whichWeek > 5)
             {
-                returnDate = first.AddDays(givenWeekDay - firstWeekDay);
+                throw new ArgumentOutOfRangeException("Invalid nth value.");
             }
-            else if(firstWeekDay > givenWeekDay)
+
+            // start from the first day of the month
+            DateTime dt = new DateTime(year, month, 1);
+
+            // loop until we find our first match day of the week
+            while (dt.DayOfWeek.ToString() != givenWeekDay)
             {
-                returnDate = first.AddDays(6 + (givenWeekDay - firstWeekDay));
+                dt = dt.AddDays(1);
             }
-            return returnDate.AddDays((whichWeek - 1) * 7);
+
+            if (dt.Month != month)
+            {
+                // we skip to the next month, we throw an exception
+                throw new ArgumentOutOfRangeException(string.Format("The given month has less than {0} {1}s", whichWeek, givenWeekDay));
+            }
+
+            // Complete the gap to the nth week
+            dt = dt.AddDays((whichWeek - 1) * 7);
+            return dt;
         }
         private int WeeksDifferenceBetweenDates(DateTime earlier, DateTime later, bool roundUp = false)
         {

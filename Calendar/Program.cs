@@ -3,9 +3,14 @@ using System.IO;
 
 namespace Calendar
 {
+    static class Environment
+    {
+        public static int LowestPriority = 4;
+    }
 
     class Program
     {
+        public int LowestPriority = 4;
         static void Main(string[] args)
         {
             Console.WriteLine("Please enter a calendar year.");
