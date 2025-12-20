@@ -14,8 +14,9 @@ namespace Calendar
         public bool IsAbstinenceDay { get; set; }
         public int Priority { get; set; }
         public string DayOfWeek { get; set; }
+        public bool IsSolo { get; set; }
 
-        public BasicCalendarDate(int date, string title = "", int priority = 4, bool isHolyDay = false, bool isFast = false, bool isAbstinence = false, string preTitle = "")
+        public BasicCalendarDate(int date, string title = "", int priority = 4, bool isHolyDay = false, bool isFast = false, bool isAbstinence = false, string preTitle = "", bool isSolo = false)
         {
             Date = date;
             Title = title;
@@ -31,6 +32,7 @@ namespace Calendar
             }
             IsFastDay = isFast;
             IsAbstinenceDay = isAbstinence;
+            IsSolo = isSolo;
         }
     }
 }
