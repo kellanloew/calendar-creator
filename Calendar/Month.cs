@@ -95,7 +95,7 @@ namespace Calendar
                     {
                         returnBool = SaintsList[day][i].IsAbstinenceDay;
                         //if the priority level is less than or equal to two, that takes precedence over level three
-                        if (i < 3) break;
+                        if (i < 2) break;
                         //but if we got to three and its a Friday, should be abstinence
                         else if (dayOfWeek == 6) returnBool = true;
                     }

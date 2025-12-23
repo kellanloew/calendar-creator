@@ -14,7 +14,7 @@ namespace Calendar
         public DateTime FirstSundayAdvent;
         public string EasterName { get; } = "EASTER SUNDAY";
         public int LowestPriority = 4;
-        public string FooterText { get; } = "<p style='font-size: 10px;'>NB (1): We need to do much penance in order to save our souls.  Catholic Candle’s calendar users the pre-Vatican II rules for fasting and abstinence which are found here: https://catholiccandle.org/2019/12/22/1476/</p><p style='font-size: 10px;'>NB (2): On a date on which two or more feasts are mentioned, the Mass is of the first feast, and the other(s) are only commemorations.</p>";
+        public string FooterText { get; } = "<p style='font-size: 10px;'>NB (1): We need to do much penance in order to save our souls.  Catholic Candle’s calendar uses the pre-Vatican II rules for fasting and abstinence which are found here: https://catholiccandle.org/2019/12/22/1476/</p><p style='font-size: 10px;'>NB (2): On a date on which two or more feasts are mentioned, the Mass is of the first feast, and the other(s) are only commemorations.</p>";
 
         private bool AnnunciationFallsDuringHolyWeek() 
         {
@@ -215,7 +215,7 @@ namespace Calendar
                 "May",
                 Year,
                 new List<BasicCalendarDate>{
-                    new BasicCalendarDate(1, "Sts. Philip & James, Apostles", 1),
+                    new BasicCalendarDate(1, "Sts. Philip & James, Apostles", 2),
                     new BasicCalendarDate(2, "St. Athanasius, Bishop Confessor Doctor"),
                     new BasicCalendarDate(3, "Sts. Alexander & Comp., Martyrs"),
                     new BasicCalendarDate(4, "St. Monica, Widow"),
@@ -465,7 +465,7 @@ namespace Calendar
                     new BasicCalendarDate(6),
                     new BasicCalendarDate(7),
                     new BasicCalendarDate(8, "Holy Four Crowned Martyrs"),
-                    new BasicCalendarDate(9, "Dedication of the Basilica of Our Most Holy Redeemer; St. Theodorus, Martyr"),
+                    new BasicCalendarDate(9, "St. Theodorus, Martyr"),
                     new BasicCalendarDate(10, "St. Andrew Avellino; St. Tryphon & Comp., Martyrs"),
                     new BasicCalendarDate(11, "St. Martin, Bishop Confessor; St. Mennas, Martyr"),
                     new BasicCalendarDate(12, "St. Martin I, Pope Martyr"),
@@ -489,7 +489,7 @@ namespace Calendar
                     new BasicCalendarDate(30, "St. Andrew the Apostle", 1)
                 }
             ));
-            AllDates[10].AddSpecialFeast(8, new BasicCalendarDate(8, "Dedication of the Most Holy Redeemer", 3), 3);
+            AllDates[10].AddSpecialFeast(8, new BasicCalendarDate(8, "Dedication of the Basilica of Our Most Holy Redeemer", 3), 3);
 
 
             //December saints
@@ -503,7 +503,7 @@ namespace Calendar
                     new BasicCalendarDate(4, "St. Peter Chrysologus, Bishop Confessor Doctor; Com. St. Barbara, Virgin Martyr"),
                     new BasicCalendarDate(5, "Com. St. Sabbas, Abbot"),
                     new BasicCalendarDate(6, "St. Nicholas, Bishop Confessor"),
-                    new BasicCalendarDate(7, "St. Ambrose, Bishop Confessor; Vigil of the Immaculate Conception"),
+                    new BasicCalendarDate(7, "St. Ambrose, Bishop Confessor"),
                     new BasicCalendarDate(8, "IMMACULATE CONCEPTION", 1, true, false, false),
                     new BasicCalendarDate(9),
                     new BasicCalendarDate(10, "St. Melchiades, Pope Martyr"),
@@ -525,7 +525,7 @@ namespace Calendar
                     new BasicCalendarDate(26, "St. Stephen, Martyr", 2),
                     new BasicCalendarDate(27, "St. John the Apostle", 2),
                     new BasicCalendarDate(28, "Holy Innocents, Martyrs", 2),
-                    new BasicCalendarDate(29, "St. Thomas of Cantebury, Bishop Martyr"),
+                    new BasicCalendarDate(29, "St. Thomas of Canterbury, Bishop Martyr"),
                     new BasicCalendarDate(30),
                     new BasicCalendarDate(31, "St. Silvester, Pope Martyr")
                 }
@@ -1013,7 +1013,7 @@ namespace Calendar
             //Immaculate Conception
             DateTime ImmConception = new DateTime(Year, 12, 7);
             if (ImmConception.DayOfWeek == DayOfWeek.Sunday) ImmConception = ImmConception.AddDays(-1);
-            AllDates[ImmConception.Month - 1].AddSpecialFeast(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of Immaculate Conception", 3, false, true, true), 2);
+            AllDates[ImmConception.Month - 1].AddSpecialFeast(ImmConception.Day - 1, new BasicCalendarDate(ImmConception.Day, "Vigil of the Immaculate Conception", 3, false, true, true), 2);
         }
 
         private void setDaysOfLentAsFastDays()
