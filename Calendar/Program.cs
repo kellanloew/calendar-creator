@@ -3,28 +3,21 @@ using System.IO;
 
 namespace Calendar
 {
-    static class Environment
-    {
-        public static int LowestPriority = 4;
-    }
-
     class Program
     {
-        public int LowestPriority = 4;
         static void Main(string[] args)
         {
             Console.WriteLine("Please enter a calendar year.");
             string yearString = Console.ReadLine();
-            int year;
 
-            if (Int32.TryParse(yearString, out year))
+            if (int.TryParse(yearString, out int year) && year > 0 && year < 9999)
             {
-                CalendarData calendarData = new CalendarData(year);
-                File.WriteAllText("calendar_"+yearString+".html", calendarData.ReturnPreHTML() + calendarData.CreateSaintDays() + "</body></html>");
+                var liturgicalYear = new LiturgicalYear(year);
+                File.WriteAllText("calendar_" + year + ".html", HtmlRenderer.Render(liturgicalYear));
             }
             else
             {
-                Console.WriteLine("Please enter a year greater than 0.");
+                Console.WriteLine("Please enter a year between 1 and 9998.");
                 Console.ReadLine();
             }
         }
